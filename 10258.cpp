@@ -11,6 +11,7 @@ typedef struct scoreCard {
 	int problems;
 	int time;
 	int numIncorrectAttempts[10];
+	bool solved[10];
 	bool exists;
 }scoreCard;
 
@@ -53,14 +54,18 @@ int main(int argc, char *argv[]) {
 					scoreBoard[contestant].contestant = contestant;
 					scoreBoard[contestant].exists = true;
 					scoreBoard[contestant].time = 0;
-					scoreBoard[contestant].problems = 0;
+					scoreBoard[contestant].problems = 0;					
 					for(i = 0; i < 10; i++) {
 						scoreBoard[contestant].numIncorrectAttempts[i] = 0;
+						scoreBoard[contestant].solved[i] = false;
 					}
 				}
 				if(l == 'C') {
-					scoreBoard[contestant].problems++;
-					scoreBoard[contestant].time += (time + (20 * scoreBoard[contestant].numIncorrectAttempts[problem]));
+					if(scoreBoard[contestant].solved[problem] == false) {
+						scoreBoard[contestant].problems++;
+						scoreBoard[contestant].time += (time + (20 * scoreBoard[contestant].numIncorrectAttempts[problem]));
+						scoreBoard[contestant].solved[problem] = true;
+					}
 				}
 				if(l == 'I') {
 					scoreBoard[contestant].numIncorrectAttempts[problem]++;;
@@ -72,14 +77,14 @@ int main(int argc, char *argv[]) {
 		if(count++ > 0) {
 			std::cout << std::endl;
 		}
-		
+
 		for(std::vector<scoreCard>::iterator it = scoreBoard.begin(); it != scoreBoard.end(); it++) {
 			if(it->exists) {
 				std::cout << it->contestant << " " << it->problems << " " << it->time << std::endl;
 			}			
 		}
 
-		
+
 		numInputs--;
 	}
 
