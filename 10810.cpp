@@ -3,45 +3,59 @@
 #include <algorithm>
 #define sz(c) (int)(c.size())
 
-int inversions = 0;
+long int MergeInversions(std::vector<int> &array, int low, int mid,  int high)
+{
+  int n1 = mid - low + 1;
+  int n2 = high -mid;
+  int left[n1 + 1];
+  int right[n2 + 1];
 
-std::vector<int> merge(const std::vector<int> &left, const std::vector<int> &right) {
-  std::vector<int> result;
-  int leftIndex = 0, rightIndex = 0;
-  while(left[leftIndex] < right[rightIndex]) {
-    result.push_back(left[leftIndex]);
-    leftIndex++;
-  }
-
-  while(left[leftIndex] > right[rightIndex]) {
-    result.push_back(right[rightIndex]);
-    inversions++;
-    rightIndex++;
+  for(int i = 0; i < n1; i++) {
+    left[i] = array[low + i - 1];
   }
 
-  while(leftIndex < sz(left)) {
-    result.push_back(left[leftIndex]);
-    leftIndex++;
+  for(int i = 0; i < n2; i++) {
+    right[i] = array[i + mid];
   }
-  while(rightIndex < sz(right)) {
-    result.push_back(right[rightIndex]);
-    rightIndex++;
+
+  // sentinels
+  left[n1] = 999999;
+  right[n2] = 999999;
+
+  int i = 0;
+  int j = 0;
+
+  long int inversions = 0;
+  bool counted = false;
+  for(int k = low - 1; k < high; k++) {
+
+    if((counted == false) && (left[i] > right[j] )) {
+      inversions += n1 - i;
+      counted = true;
+    }
+    if(left[i] <= right[j]) {
+      array[k] = left[i];
+      i++;
+    } else {
+      array[k] = right[j];
+      j++;
+      counted = false;
+    }
   }
-  return result;
+
+  return inversions;
 }
 
-
-std::vector<int> mergeSort(const std::vector<int> &numbers) {
-  if(sz(numbers) == 1) {
-    return numbers;
-  } else {
-    int middle = (sz(numbers) / 2);
-    std::vector<int> left(numbers.begin(), numbers.begin() + middle);
-    std::vector<int> right(numbers.begin() + middle, numbers.end());
-    left = mergeSort(left);
-    right = mergeSort(right);
-    return merge(left, right);
+long int CountInversions(std::vector<int> &array, int low, int high){
+  long int inversions = 0;
+  if (low < high)
+  {
+    int mid = (low + high) / 2;
+    inversions += CountInversions(array, low, mid);
+    inversions += CountInversions(array, mid + 1, high);
+    inversions += MergeInversions(array, low, mid, high);
   }
+  return inversions;
 }
 
 int main(int argc, char *argv[]) {
@@ -59,9 +73,7 @@ int main(int argc, char *argv[]) {
         testCase--;
       }
 
-      inversions = 0;
-      mergeSort(numbers);
-      std::cout << inversions << std::endl;
+      std::cout << CountInversions(numbers, 1, sz(numbers)) << std::endl;
     }
   }
   return 0;
