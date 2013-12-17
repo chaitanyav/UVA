@@ -4,6 +4,8 @@
 #include <sstream>
 #include <vector>
 
+// a backtracking algorithm can be used
+// to generate permutations in this case
 std::string toString(std::vector<char> &letters) {
 	std::stringstream ss;
 	ss.clear();
