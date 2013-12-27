@@ -61,7 +61,7 @@ int main(int argc, char *argv[]) {
     }
 
     std::pair<int, int> minRange(1, 999999);
-    for (int i = 1; i <= wordsCounter; i++) {
+    for (int i = 1; i <= (wordsCounter - numUniqueWords); i++) {
       int index1 = i;
       int index2 = 0;
       std::set<int> seenIndices;
@@ -87,7 +87,11 @@ int main(int argc, char *argv[]) {
       }
     }
 
-    printf("Document %d: %d %d\n", ++document, minRange.first, minRange.second);
+    if(wordsCounter == numUniqueWords) {
+      printf("Document %d: %d %d\n", ++document, minRange.first, numUniqueWords);
+    } else {
+      printf("Document %d: %d %d\n", ++document, minRange.first, minRange.second);
+    }
     numDocuments--;
   }
   return 0;
