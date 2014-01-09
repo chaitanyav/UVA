@@ -38,6 +38,13 @@ std::string add(std::string &a, std::string &b) {
     result = "0";
   }
 
+  for(index = ((int) result.length()) - 1; index > 0; index--) {
+    if(result.at(index) != '0') {
+      break;
+    }
+  }
+
+  result = result.substr(0, index + 1);
   result = std::string(result.rbegin(), result.rend());
   return result;
 }
