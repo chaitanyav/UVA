@@ -84,6 +84,37 @@ bool startsWith(std::string str, std::string prefix) {
   return true;
 }
 
+bool endsWith(std::string str, std::string suffix) {
+  int nChars = (int) suffix.length();
+  int start = (int)str.length() - nChars;
+  if(start < 0) return false;
+  for(int i = 0; i < nChars; i++) {
+    if(str[start + i] != suffix[i]) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
+bool endsWith(std::string str, char suffix) {
+  int nChars = (int) str.length();
+  return (nChars > 0) && str[nChars - 1] == suffix;
+}
+
+std::string trim(std::string str) {
+  int finish = (int) str.length() - 1;
+  while(finish >= 0 && isspace(str[finish])) {
+    finish--;
+  }
+
+  int start = 0;
+  while(start <= finish && isspace(str[start])) {
+    start++;
+  }
+  return str.substr(start, finish - start + 1);
+}
+
 int main(int argc, char *argv[]) {
   assert(stringToInteger("10    ") == 10);
   assert(stringToInteger("10") == 10);
@@ -107,5 +138,14 @@ int main(int argc, char *argv[]) {
   assert(startsWith("foo", "fo"));
   assert(startsWith("foo", "bar") == false);
   assert(startsWith("foo", "bars") == false);
+  assert(endsWith("foo", "o"));
+  assert(endsWith("foo", "bar") == false);
+  assert(endsWith("foo", "goobar") == false);
+  assert(endsWith("foo", 'o'));
+  assert(endsWith("foo", 'b') == false);
+  assert((trim("foo   ")).compare("foo") == 0);
+  assert((trim("   foo   ")).compare("foo") == 0);
+  assert((trim("    foo")).compare("foo") == 0);
+  assert((trim("foo")).compare("foo") == 0);
   return 0;
 }
