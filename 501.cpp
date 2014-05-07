@@ -40,7 +40,7 @@ int main(int argc, char *argv[]) {
     int index = 0;
     for(std::vector<int>::iterator it = orig_elements.begin(); it != orig_elements.end(); it++) {
        elements.insert(*it);
-       while(std::binary_search(get_sequence.begin(), get_sequence.end(), elements.size())) {
+       while(!get_sequence.empty() && (get_sequence[0] == elements.size())) {
           get_sequence.erase(get_sequence.begin());
 
           int msindex = 0;
