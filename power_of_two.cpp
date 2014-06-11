@@ -25,6 +25,14 @@ bool power_of_two_shift(unsigned int num) {
     return false;
 }
 
+bool power_of_two_efficient(unsigned int num) {
+  if(!num) {
+    return false;
+  }
+
+  return 0 == (num & (num - 1));
+}
+
 int main(int argc, char *argv[]) {
   assert(power_of_two(2));
   assert(power_of_two(4));
@@ -39,6 +47,12 @@ int main(int argc, char *argv[]) {
   assert(power_of_two_shift(2048));
 
   assert(power_of_two(1));
-  assert(power_of_two(0));
+  assert(power_of_two_efficient(2));
+  assert(power_of_two_efficient(4));
+  assert(power_of_two_efficient(8));
+  assert(power_of_two_efficient(16));
+  assert(power_of_two_efficient(2048));
+
+  assert(power_of_two_efficient(0));
   return 0;
 }
